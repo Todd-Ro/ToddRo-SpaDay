@@ -4,14 +4,18 @@
 @{
 }
 
-<form action="/user" method="post">
+<h2>@ViewBag.passwordmatchmsg</h2>
+
+<form method="post" action="/user">
     <label for="username">Username:</label><br />
-    <input type="text" id="username" name="username" /> <br />
-    <label for="password">Password:</label> <br />
-    <input type="password" id="password" name="password" /> <br />
+    <input type="text" id="username" name="username" class="form-control"
+           value="@ViewBag.username"/> <br />
     <label for="email">Email:</label> <br />
-    <input type="email" id="email" name="email" /> <br />
+    <input type="email" id="email" name="email" class="form-control"
+           value="@ViewBag.email"/> <br />
+    <label for="password">Password:</label> <br />
+    <input type="password" id="password" name="password" class="form-control"/> <br />
     <label for="verify">Verify Password:</label> <br />
-    <input type="password" id="verify" name="verify" /> <br /><br />
-    <input type="submit" value="Submit" />
+    <input type="password" id="verify" name="verify" class="form-control"/> <br /><br />
+    <input type="submit" value="Submit New User" class="btn-primary" />
 </form>

@@ -1,14 +1,27 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using SpaDay.Models;
+using System;
 
 namespace SpaDay.Controllers
 {
     public class UserController : Controller
     {
         static string mostRecentUsername;
+        static DateTime mostRecentJoinDate;
+
+        static string StringOfDate(DateTime dt)
+        {
+            string joinDateString = dt.Year.ToString() + "-"
+                + dt.Month.ToString() + "-"
+                + dt.Day.ToString();
+            return joinDateString;
+        }
+
         public IActionResult Index()
         {
             ViewBag.username = mostRecentUsername;
+            string joinDateString = StringOfDate(mostRecentJoinDate);
+            ViewBag.joindate = joinDateString;
             return View();
         }
 
@@ -19,22 +32,27 @@ namespace SpaDay.Controllers
         }
 
         [HttpPost]
-        [Route("/User/Add")]
-        public IActionResult SubmitAddUserForm(
-            //User newUser, 
-            string verify
-            , string username, string email, string password
-            )
+        [Route("/User")]
+        public IActionResult SubmitAddUserForm(User newUser, string verify
+            , string username, string email)
         {
-            User newUser = new User(username, email, password);
+            //, string password
+            //User newUser = new User(username, email, password);
+            ViewBag.username = username;
             if (verify.Equals(newUser.Password))
             {
                 mostRecentUsername = newUser.Username;
-                ViewBag.username = newUser.Username;
+                mostRecentJoinDate = newUser.TimeJoined.Date;
+                string joinDateString = StringOfDate(mostRecentJoinDate);
+                ViewBag.joindate = joinDateString;
                 return View("Index");
             } else
             {
-                return Redirect("/User/Add");
+                string error = "Password and verify do not match. Please try again.";
+                ViewBag.passwordmatchmsg = error;
+                ViewBag.email = email;
+                return View("Add");
+                //return Redirect("/User/Add");
             }
         }
     }
